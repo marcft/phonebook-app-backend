@@ -8,3 +8,6 @@ content-type: 'application/json'
     "name": "Post Test",
     "number": "5678"
 }
+
+###
+HEAD http://localhost:3001/api/persons/
