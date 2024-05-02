@@ -14,34 +14,6 @@ app.use(
   morgan(':method :url :status :res[content-length] - :response-time ms :body')
 )
 
-let persons = [
-  {
-    name: 'Arto Hellas',
-    number: '040-123456',
-    id: 1,
-  },
-  {
-    name: 'Ada Lovelace',
-    number: '39-44-5323523',
-    id: 2,
-  },
-  {
-    name: 'Dan Abramov',
-    number: '12-43-234345',
-    id: 3,
-  },
-  {
-    name: 'Mary Poppendieck',
-    number: '39-23-6423122',
-    id: 4,
-  },
-  {
-    name: 'Marc French',
-    number: '647299',
-    id: 5,
-  },
-]
-
 app.get('/api/persons', (request, response) => {
   Note.find().then((persons) => {
     response.json(persons)
@@ -77,18 +49,15 @@ app.post('/api/persons', (request, response) => {
   if (!body.name || !body.number) {
     return response.status(404).json({ error: 'Content missing' })
   }
-  if (persons.some((p) => p.name === body.name)) {
-    return response.status(404).json({ error: 'Name must be unique' })
-  }
 
-  const newPerson = {
+  const newPerson = new Note({
     name: body.name,
     number: body.number,
-    id: generateId(),
-  }
+  })
 
-  persons = persons.concat(newPerson)
-  response.json(newPerson)
+  newPerson.save().then((res) => {
+    response.json(res)
+  })
 })
 
 const unknownEndpoint = (request, response) => {
