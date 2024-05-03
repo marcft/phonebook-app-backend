@@ -34,15 +34,10 @@ app.get('/api/info', (request, response) => {
 })
 
 app.delete('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  persons = persons.filter((p) => p.id !== id)
-
-  response.status(204).end()
+  Note.findByIdAndDelete(request.params.id).then((res) => {
+    response.status(204).end()
+  })
 })
-
-const generateId = () => {
-  return Math.floor(Math.random() * 1000000)
-}
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
@@ -65,7 +60,7 @@ const unknownEndpoint = (request, response) => {
 }
 app.use(unknownEndpoint)
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
