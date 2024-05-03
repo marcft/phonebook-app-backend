@@ -14,6 +14,17 @@ app.use(
   morgan(':method :url :status :res[content-length] - :response-time ms :body')
 )
 
+app.get('/api/info', (request, response) => {
+  Note.find()
+    .then((persons) => {
+      response.send(
+        `<p>Phonebook has info for ${persons.length}</p>
+      <p>${new Date().toString()}</p>`
+      )
+    })
+    .catch((error) => next(error))
+})
+
 app.get('/api/persons', (request, response) => {
   Note.find()
     .then((persons) => {
@@ -32,13 +43,6 @@ app.get('/api/persons/:id', (request, response, next) => {
       }
     })
     .catch((error) => next(error))
-})
-
-app.get('/api/info', (request, response) => {
-  response.send(
-    `<p>Phonebook has info for ${persons.length}</p>
-    <p>${new Date().toString()}</p>`
-  )
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
@@ -64,6 +68,24 @@ app.post('/api/persons', (request, response, next) => {
     .save()
     .then((res) => {
       response.json(res)
+    })
+    .catch((error) => next(error))
+})
+
+app.put('/api/persons/:id', (request, response, next) => {
+  const body = request.body
+  if (!body.name || !body.number) {
+    return response.status(404).json({ error: 'Content missing' })
+  }
+
+  const person = {
+    name: body.name,
+    number: body.number,
+  }
+
+  Note.findByIdAndUpdate(request.params.id, person, { new: true })
+    .then((newPerson) => {
+      response.json(newPerson)
     })
     .catch((error) => next(error))
 })
