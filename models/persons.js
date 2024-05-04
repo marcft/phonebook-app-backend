@@ -13,6 +13,8 @@ mongoose
     console.log('Could not connect to MongoDB:', err.message)
   })
 
+const numberValidator = (value) => /^\d{2,3}-\d+$/.test(value)
+
 const personSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -22,6 +24,8 @@ const personSchema = new mongoose.Schema({
   },
   number: {
     type: String,
+    minLength: [8, "The person's number is too short, must be at least 8"],
+    validate: [numberValidator, "The person's number must begin with XX-X..."],
     required: true,
   },
 })
