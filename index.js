@@ -14,7 +14,7 @@ app.use(
   morgan(':method :url :status :res[content-length] - :response-time ms :body')
 )
 
-app.get('/api/info', (request, response) => {
+app.get('/api/info', (request, response, next) => {
   Note.find()
     .then((persons) => {
       response.send(
@@ -25,7 +25,7 @@ app.get('/api/info', (request, response) => {
     .catch((error) => next(error))
 })
 
-app.get('/api/persons', (request, response) => {
+app.get('/api/persons', (request, response, next) => {
   Note.find()
     .then((persons) => {
       response.json(persons)
