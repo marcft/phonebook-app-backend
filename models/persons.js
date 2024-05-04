@@ -14,8 +14,16 @@ mongoose
   })
 
 const personSchema = new mongoose.Schema({
-  name: String,
-  number: String,
+  name: {
+    type: String,
+    minLength: [3, "The person's name is too short, must be at least 3"],
+    maxLength: [100, "The person's name is too long, must be less than 100"],
+    required: true,
+  },
+  number: {
+    type: String,
+    required: true,
+  },
 })
 
 personSchema.set('toJSON', {
