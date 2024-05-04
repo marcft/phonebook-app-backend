@@ -9,9 +9,9 @@ app.use(cors())
 app.use(express.static('dist'))
 app.use(express.json())
 
-morgan.token('body', (req, res) => JSON.stringify(req.body))
+morgan.token('body', (req) => JSON.stringify(req.body))
 app.use(
-  morgan(':method :url :status :res[content-length] - :response-time ms :body')
+  morgan(':method :url :status :res[content-length] - :response-time ms :body'),
 )
 
 app.get('/api/info', (request, response, next) => {
@@ -19,7 +19,7 @@ app.get('/api/info', (request, response, next) => {
     .then((persons) => {
       response.send(
         `<p>Phonebook has info for ${persons.length}</p>
-      <p>${new Date().toString()}</p>`
+      <p>${new Date().toString()}</p>`,
       )
     })
     .catch((error) => next(error))
@@ -47,7 +47,7 @@ app.get('/api/persons/:id', (request, response, next) => {
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Note.findByIdAndDelete(request.params.id)
-    .then((res) => {
+    .then(() => {
       response.status(204).end()
     })
     .catch((error) => next(error))
@@ -72,7 +72,7 @@ app.put('/api/persons/:id', (request, response, next) => {
   Note.findByIdAndUpdate(
     request.params.id,
     { name, number },
-    { new: true, runValidators: true, context: 'query' }
+    { new: true, runValidators: true, context: 'query' },
   )
     .then((newPerson) => {
       if (newPerson) {

@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 if (process.argv.length !== 3 && process.argv.length !== 5) {
   console.log(
-    'Arguments must be either: \n\tyourpassword \n\tyourpassword name number'
+    'Arguments must be either: \n\tyourpassword \n\tyourpassword name number',
   )
   process.exit(1)
 }
@@ -33,7 +33,7 @@ if (process.argv.length == 3) {
 } else {
   const person = new Person({ name: process.argv[3], number: process.argv[4] })
 
-  person.save().then((res) => {
+  person.save().then(() => {
     console.log(`added ${person.name} number ${person.number} to phonebook`)
     mongoose.connection.close()
   })

@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "build:ui": "rm -rf dist && cd ../frontend && npm run build && cp -r dist ../backend"
+    "build:ui": "rm -rf dist && cd ../frontend && npm run build && cp -r dist ../backend",
+    "lint": "eslint ."
   },
   "author": "Marc Frances",
   "license": "ISC",
@@ -19,6 +20,11 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "@eslint/js": "^9.2.0",
+    "eslint": "^9.2.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.1.0",
+    "nodemon": "^3.1.0",
+    "prettier": "^3.2.5"
   }
 }
